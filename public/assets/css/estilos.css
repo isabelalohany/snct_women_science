@@ -1,0 +1,235 @@
+:root {
+    --cor-primaria: #3d246c;
+    --cor-primaria-escura: #28164a;
+    --cor-acento: #ffca5a;
+    --cor-acento-escura: #e9ad33;
+    --cor-texto: #2f2b38;
+    --cor-texto-suave: #655f70;
+    --cor-fundo: #fbf9ff;
+    --cor-superficie: #ffffff;
+    --cor-borda: #e6e0f0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    flex: 1;
+}
+
+.atalho-conteudo {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 1100;
+    padding: 0.65rem 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background-color: var(--cor-acento);
+    color: var(--cor-primaria-escura);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.atalho-conteudo:focus {
+    top: 0;
+}
+
+.cabecalho-site {
+    background-color: var(--cor-primaria);
+}
+
+.marca-site {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.marca-simbolo {
+    display: inline-block;
+    color: var(--cor-acento);
+    margin-right: 0.25rem;
+}
+
+.navbar .nav-link {
+    font-weight: 600;
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    color: var(--cor-acento);
+}
+
+.btn-acento {
+    background-color: var(--cor-acento);
+    border-color: var(--cor-acento);
+    color: var(--cor-primaria-escura);
+    font-weight: 700;
+}
+
+.btn-acento:hover,
+.btn-acento:focus {
+    background-color: var(--cor-acento-escura);
+    border-color: var(--cor-acento-escura);
+    color: var(--cor-primaria-escura);
+}
+
+.hero {
+    overflow: hidden;
+    padding: 5.5rem 0;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(255, 202, 90, 0.28), transparent 30rem),
+        linear-gradient(135deg, var(--cor-primaria-escura), var(--cor-primaria));
+    color: #ffffff;
+}
+
+.hero-texto {
+    max-width: 42rem;
+}
+
+.sobretitulo {
+    margin-bottom: 1rem;
+    color: var(--cor-acento);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.titulo-hero {
+    max-width: 14ch;
+    font-size: clamp(2.4rem, 5vw, 4.6rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1.03;
+}
+
+.texto-hero {
+    max-width: 38rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
+}
+
+.painel-hero {
+    max-width: 25rem;
+    margin: 2rem auto 0;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 1.25rem;
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.16);
+    backdrop-filter: blur(6px);
+}
+
+.painel-hero-icone {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    place-items: center;
+    border-radius: 50%;
+    background-color: var(--cor-acento);
+    color: var(--cor-primaria-escura);
+    font-size: 1.8rem;
+}
+
+.secao-pagina {
+    padding: 5rem 0;
+}
+
+.titulo-secao {
+    color: var(--cor-primaria-escura);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.texto-secao {
+    max-width: 43rem;
+    color: var(--cor-texto-suave);
+}
+
+.cartao-proposito {
+    height: 100%;
+    padding: 1.75rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 1rem;
+    background-color: var(--cor-superficie);
+    box-shadow: 0 0.5rem 1.5rem rgba(48, 30, 87, 0.06);
+}
+
+.icone-cartao {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    margin-bottom: 1.25rem;
+    border-radius: 0.75rem;
+    background-color: #eee7fa;
+    color: var(--cor-primaria);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.cartao-proposito h3 {
+    color: var(--cor-primaria-escura);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.cartao-proposito p {
+    margin-bottom: 0;
+    color: var(--cor-texto-suave);
+}
+
+.secao-chamada {
+    padding: 4rem 0;
+    background-color: #eee7fa;
+}
+
+.chamada-interna {
+    padding: 2.5rem;
+    border-radius: 1.25rem;
+    background-color: var(--cor-superficie);
+    box-shadow: 0 0.75rem 2rem rgba(48, 30, 87, 0.08);
+}
+
+.rodape-site {
+    margin-top: auto;
+    background-color: var(--cor-primaria-escura);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+}
+
+.texto-rodape-secundario {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        padding: 1rem 0 0.5rem;
+    }
+
+    .hero {
+        padding: 4.25rem 0;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .hero,
+    .secao-pagina {
+        padding: 3.5rem 0;
+    }
+
+    .painel-hero,
+    .chamada-interna {
+        padding: 1.5rem;
+    }
+}
