@@ -1,7 +1,7 @@
 # Plano de desenvolvimento
 
 **Aprovação:** 15 de novembro de 2026  
-**Estado atual:** Entrega 1 concluída e Entrega 2 implementada, aguardando validação visual.
+**Estado atual:** Entregas 1, 2 e 3 concluídas e validadas; Entrega 4 aguardando autorização para início.
 
 Este plano organiza o desenvolvimento do portal Mulheres na Ciência em entregas
 pequenas, dependentes e validáveis. Cada entrega só poderá começar após a
@@ -36,9 +36,9 @@ Integração geral → revisão final
 | Entrega | Estado |
 | --- | --- |
 | 1. Fundação segura e banco de dados | Concluída; validação manual em MySQL/MariaDB confirmada pelo usuário. |
-| 2. Layout compartilhado e página inicial básica | Implementada; aguardando validação visual. |
-| 3. Cadastro, login e logout | Aguardando a Entrega 2. |
-| 4. Indicação de cientistas | Aguardando a Entrega 3. |
+| 2. Layout compartilhado e página inicial básica | Concluída; validação visual confirmada pelo usuário. |
+| 3. Cadastro, login e logout | Concluída; validação manual confirmada pelo usuário. |
+| 4. Indicação de cientistas | Aguardando autorização para início. |
 | 5. Consulta administrativa | Aguardando a Entrega 4. |
 | 6. Gestão administrativa de perfis | Aguardando a Entrega 5. |
 | 7. Moderação e controle de publicação | Aguardando a Entrega 6. |

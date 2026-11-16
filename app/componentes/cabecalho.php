@@ -7,9 +7,11 @@
 
 $tituloPagina = $tituloPagina ?? 'Mulheres na Ciência';
 $paginaAtiva = $paginaAtiva ?? '';
-$urlBase = rtrim(configuracao('APP_URL', ''), '/');
-$tituloSeguro = htmlspecialchars($tituloPagina, ENT_QUOTES, 'UTF-8');
-$urlBaseSeguro = htmlspecialchars($urlBase, ENT_QUOTES, 'UTF-8');
+require_once dirname(__DIR__) . '/funcoes/comuns.php';
+
+$usuarioLogado = function_exists('usuarioAtual') ? usuarioAtual() : null;
+$tituloSeguro = escapar($tituloPagina);
+$urlBaseSeguro = escapar(urlAplicacao());
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -48,12 +50,24 @@ $urlBaseSeguro = htmlspecialchars($urlBase, ENT_QUOTES, 'UTF-8');
                         <li class="nav-item">
                             <a class="nav-link" href="<?= $urlBaseSeguro ?>/catalogo.php">Catálogo</a>
                         </li>
-                        <li class="nav-item mt-2 mt-lg-0">
-                            <a class="btn btn-outline-light btn-sm px-3" href="<?= $urlBaseSeguro ?>/login.php">Entrar</a>
-                        </li>
-                        <li class="nav-item mt-2 mt-lg-0">
-                            <a class="btn btn-acento btn-sm px-3" href="<?= $urlBaseSeguro ?>/cadastro.php">Criar conta</a>
-                        </li>
+                        <?php if ($usuarioLogado !== null): ?>
+                            <li class="nav-item mt-2 mt-lg-0">
+                                <span class="navbar-text nome-usuario">Olá, <?= escapar($usuarioLogado['nome_completo']) ?></span>
+                            </li>
+                            <li class="nav-item mt-2 mt-lg-0">
+                                <form method="post" action="<?= $urlBaseSeguro ?>/logout.php">
+                                    <input type="hidden" name="token_csrf" value="<?= escapar(gerarTokenCsrf()) ?>">
+                                    <button class="btn btn-outline-light btn-sm px-3" type="submit">Sair</button>
+                                </form>
+                            </li>
+                        <?php else: ?>
+                            <li class="nav-item mt-2 mt-lg-0">
+                                <a class="btn btn-outline-light btn-sm px-3" href="<?= $urlBaseSeguro ?>/login.php">Entrar</a>
+                            </li>
+                            <li class="nav-item mt-2 mt-lg-0">
+                                <a class="btn btn-acento btn-sm px-3" href="<?= $urlBaseSeguro ?>/cadastro.php">Criar conta</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>

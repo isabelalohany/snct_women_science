@@ -1,14 +1,23 @@
 <?php
 
 require_once dirname(__DIR__) . '/app/config/bootstrap.php';
+require_once dirname(__DIR__) . '/app/funcoes/autenticacao.php';
 
 $tituloPagina = 'Mulheres na Ciência';
 $paginaAtiva = 'inicio';
+$mensagemFlash = obterMensagemFlash();
 
 require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
 ?>
 
 <main id="conteudo-principal">
+    <?php if ($mensagemFlash !== null): ?>
+        <div class="container pt-4">
+            <div class="alert alert-<?= escapar(classeMensagemFlash($mensagemFlash['tipo'])) ?> mb-0" role="alert">
+                <?= escapar($mensagemFlash['texto']) ?>
+            </div>
+        </div>
+    <?php endif; ?>
     <section class="hero">
         <div class="container">
             <div class="row align-items-center g-5">
@@ -20,10 +29,10 @@ require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
                         que marcaram — e continuam marcando — a história da ciência.
                     </p>
                     <div class="d-flex flex-column flex-sm-row gap-3">
-                        <a class="btn btn-acento btn-lg px-4" href="<?= htmlspecialchars(rtrim(configuracao('APP_URL', ''), '/'), ENT_QUOTES, 'UTF-8') ?>/catalogo.php">
+                        <a class="btn btn-acento btn-lg px-4" href="<?= escapar(urlAplicacao('catalogo.php')) ?>">
                             Explorar catálogo
                         </a>
-                        <a class="btn btn-outline-light btn-lg px-4" href="<?= htmlspecialchars(rtrim(configuracao('APP_URL', ''), '/'), ENT_QUOTES, 'UTF-8') ?>/cadastro.php">
+                        <a class="btn btn-outline-light btn-lg px-4" href="<?= escapar(urlAplicacao('cadastro.php')) ?>">
                             Indicar uma cientista
                         </a>
                     </div>
@@ -91,7 +100,7 @@ require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
                     </p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
-                    <a class="btn btn-primary btn-lg px-4" href="<?= htmlspecialchars(rtrim(configuracao('APP_URL', ''), '/'), ENT_QUOTES, 'UTF-8') ?>/cadastro.php">
+                    <a class="btn btn-primary btn-lg px-4" href="<?= escapar(urlAplicacao('cadastro.php')) ?>">
                         Criar minha conta
                     </a>
                 </div>

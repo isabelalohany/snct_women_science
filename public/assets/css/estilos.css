@@ -83,6 +83,23 @@ main {
     color: var(--cor-primaria-escura);
 }
 
+.btn-primary {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    font-weight: 700;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--cor-primaria-escura);
+    border-color: var(--cor-primaria-escura);
+}
+
+.nome-usuario {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+}
+
 .hero {
     overflow: hidden;
     padding: 5.5rem 0;
@@ -192,6 +209,26 @@ main {
 .secao-chamada {
     padding: 4rem 0;
     background-color: #eee7fa;
+}
+
+.pagina-formulario {
+    padding: 4.5rem 0;
+}
+
+.cartao-formulario {
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border: 1px solid var(--cor-borda);
+    border-radius: 1.25rem;
+    background-color: var(--cor-superficie);
+    box-shadow: 0 0.75rem 2rem rgba(48, 30, 87, 0.08);
+}
+
+.texto-formulario {
+    color: var(--cor-texto-suave);
+}
+
+.campo-obrigatorio {
+    color: #a11f3f;
 }
 
 .chamada-interna {

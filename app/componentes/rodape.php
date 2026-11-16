@@ -4,8 +4,9 @@
  * Rodapé compartilhado e carregamento do JavaScript local do Bootstrap.
  */
 
-$urlBase = rtrim(configuracao('APP_URL', ''), '/');
-$urlBaseSeguro = htmlspecialchars($urlBase, ENT_QUOTES, 'UTF-8');
+require_once dirname(__DIR__) . '/funcoes/comuns.php';
+
+$urlBaseSeguro = escapar(urlAplicacao());
 ?>
     <footer class="rodape-site">
         <div class="container py-4 d-md-flex justify-content-between align-items-center text-center text-md-start">
