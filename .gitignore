@@ -1,0 +1,6 @@
+# Configurações locais e credenciais.
+/.env
+
+# Arquivos enviados e registros técnicos são dados locais do servidor.
+/storage/uploads/
+/storage/logs/

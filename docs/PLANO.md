@@ -35,7 +35,7 @@ Integração geral → revisão final
 
 | Entrega | Estado |
 | --- | --- |
-| 1. Fundação segura e banco de dados | Aguardando autorização. |
+| 1. Fundação segura e banco de dados | Implementada; validação em MySQL/MariaDB pendente de ambiente configurado. |
 | 2. Layout compartilhado e página inicial básica | Aguardando a Entrega 1. |
 | 3. Cadastro, login e logout | Aguardando a Entrega 2. |
 | 4. Indicação de cientistas | Aguardando a Entrega 3. |
