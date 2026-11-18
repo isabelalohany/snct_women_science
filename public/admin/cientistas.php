@@ -9,6 +9,7 @@ exigirAdministrador();
 $tituloPagina = 'Perfis de cientistas | Mulheres na Ciência';
 $paginaAtiva = 'admin-cientistas';
 $cientistas = null;
+$mensagemFlash = obterMensagemFlash();
 $situacoes = [
     'pendente' => 'Pendentes',
     'publicada' => 'Publicadas',
@@ -49,6 +50,12 @@ require_once dirname(__DIR__, 2) . '/app/componentes/cabecalho.php';
             </div>
         </div>
 
+        <?php if ($mensagemFlash !== null): ?>
+            <div class="alert alert-<?= escapar(classeMensagemFlash($mensagemFlash['tipo'])) ?>" role="alert">
+                <?= escapar($mensagemFlash['texto']) ?>
+            </div>
+        <?php endif; ?>
+
         <?php if ($cientistas === null): ?>
             <div class="alert alert-danger" role="alert">
                 Não foi possível consultar os perfis agora. Tente novamente mais tarde.
@@ -88,10 +95,37 @@ require_once dirname(__DIR__, 2) . '/app/componentes/cabecalho.php';
                                             <td><?= escapar(date('d/m/Y H:i', strtotime($cientista['criado_em']))) ?></td>
                                             <td><?= escapar(date('d/m/Y H:i', strtotime($cientista['atualizado_em']))) ?></td>
                                             <td>
-                                                <a class="btn btn-sm btn-outline-primary"
-                                                    href="<?= escapar(urlAplicacao('admin/cientista-formulario.php?id=' . (int) $cientista['id_cientista'])) ?>">
-                                                    Editar
-                                                </a>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    <a class="btn btn-sm btn-outline-primary"
+                                                        href="<?= escapar(urlAplicacao('admin/cientista-formulario.php?id=' . (int) $cientista['id_cientista'])) ?>">
+                                                        Editar
+                                                    </a>
+                                                    <?php if ($status === 'pendente'): ?>
+                                                        <?php foreach (['publicada' => 'Aprovar', 'rejeitada' => 'Rejeitar'] as $novoStatus => $rotuloAcao): ?>
+                                                            <form method="post" action="<?= escapar(urlAplicacao('admin/cientista-status.php')) ?>">
+                                                                <input type="hidden" name="token_csrf" value="<?= escapar(gerarTokenCsrf()) ?>">
+                                                                <input type="hidden" name="id_cientista" value="<?= (int) $cientista['id_cientista'] ?>">
+                                                                <input type="hidden" name="novo_status" value="<?= escapar($novoStatus) ?>">
+                                                                <button class="btn btn-sm <?= $novoStatus === 'publicada' ? 'btn-success' : 'btn-outline-danger' ?>"
+                                                                    type="submit"><?= escapar($rotuloAcao) ?></button>
+                                                            </form>
+                                                        <?php endforeach; ?>
+                                                    <?php elseif ($status === 'publicada'): ?>
+                                                        <form method="post" action="<?= escapar(urlAplicacao('admin/cientista-status.php')) ?>">
+                                                            <input type="hidden" name="token_csrf" value="<?= escapar(gerarTokenCsrf()) ?>">
+                                                            <input type="hidden" name="id_cientista" value="<?= (int) $cientista['id_cientista'] ?>">
+                                                            <input type="hidden" name="novo_status" value="oculta">
+                                                            <button class="btn btn-sm btn-outline-secondary" type="submit">Ocultar</button>
+                                                        </form>
+                                                    <?php elseif ($status === 'oculta'): ?>
+                                                        <form method="post" action="<?= escapar(urlAplicacao('admin/cientista-status.php')) ?>">
+                                                            <input type="hidden" name="token_csrf" value="<?= escapar(gerarTokenCsrf()) ?>">
+                                                            <input type="hidden" name="id_cientista" value="<?= (int) $cientista['id_cientista'] ?>">
+                                                            <input type="hidden" name="novo_status" value="publicada">
+                                                            <button class="btn btn-sm btn-success" type="submit">Republicar</button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                </div>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

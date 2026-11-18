@@ -247,3 +247,57 @@ function excluirCientistaAdministrativamente(mysqli $conexao, int $idCientista):
 
     return $exclusao->affected_rows === 1;
 }
+
+/**
+ * Aplica somente as transições administrativas permitidas para o status atual.
+ */
+function alterarStatusCientista(
+    mysqli $conexao,
+    int $idCientista,
+    string $novoStatus,
+    int $administradorId
+): bool {
+    $cientista = buscarCientistaAdministrativamente($conexao, $idCientista);
+
+    if ($cientista === null) {
+        return false;
+    }
+
+    $transicoesPermitidas = [
+        'pendente' => ['publicada', 'rejeitada'],
+        'publicada' => ['oculta'],
+        'oculta' => ['publicada'],
+        'rejeitada' => [],
+    ];
+    $statusAtual = $cientista['status'];
+
+    if (!in_array($novoStatus, $transicoesPermitidas[$statusAtual] ?? [], true)) {
+        return false;
+    }
+
+    $dataDecisao = date('Y-m-d H:i:s');
+    $dataPublicacao = $novoStatus === 'publicada' ? $dataDecisao : null;
+    $atualizacao = $conexao->prepare(
+        'UPDATE cientistas
+         SET status = ?,
+             analisado_por_usuario_id = ?,
+             analisado_em = ?,
+             alterado_por_usuario_id = ?,
+             publicado_em = CASE WHEN ? = \'publicada\' THEN ? ELSE publicado_em END
+         WHERE id_cientista = ? AND status = ?'
+    );
+    $atualizacao->bind_param(
+        'sisissis',
+        $novoStatus,
+        $administradorId,
+        $dataDecisao,
+        $administradorId,
+        $novoStatus,
+        $dataPublicacao,
+        $idCientista,
+        $statusAtual
+    );
+    $atualizacao->execute();
+
+    return $atualizacao->affected_rows === 1;
+}
