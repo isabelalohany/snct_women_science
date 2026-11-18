@@ -5,6 +5,7 @@ require_once dirname(__DIR__) . '/app/funcoes/autenticacao.php';
 
 $tituloPagina = 'Mulheres na Ciência';
 $paginaAtiva = 'inicio';
+$usuarioLogado = usuarioAtual();
 $mensagemFlash = obterMensagemFlash();
 
 require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
@@ -32,7 +33,7 @@ require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
                         <a class="btn btn-acento btn-lg px-4" href="<?= escapar(urlAplicacao('catalogo.php')) ?>">
                             Explorar catálogo
                         </a>
-                        <a class="btn btn-outline-light btn-lg px-4" href="<?= escapar(urlAplicacao('cadastro.php')) ?>">
+                        <a class="btn btn-outline-light btn-lg px-4" href="<?= escapar(urlAplicacao($usuarioLogado === null ? 'cadastro.php' : 'indicar-cientista.php')) ?>">
                             Indicar uma cientista
                         </a>
                     </div>
@@ -100,8 +101,8 @@ require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
                     </p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
-                    <a class="btn btn-primary btn-lg px-4" href="<?= escapar(urlAplicacao('cadastro.php')) ?>">
-                        Criar minha conta
+                    <a class="btn btn-primary btn-lg px-4" href="<?= escapar(urlAplicacao($usuarioLogado === null ? 'cadastro.php' : 'indicar-cientista.php')) ?>">
+                        <?= $usuarioLogado === null ? 'Criar minha conta' : 'Indicar uma cientista' ?>
                     </a>
                 </div>
             </div>

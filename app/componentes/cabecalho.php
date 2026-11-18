@@ -51,6 +51,9 @@ $urlBaseSeguro = escapar(urlAplicacao());
                             <a class="nav-link" href="<?= $urlBaseSeguro ?>/catalogo.php">Catálogo</a>
                         </li>
                         <?php if ($usuarioLogado !== null): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= $urlBaseSeguro ?>/indicar-cientista.php">Indicar cientista</a>
+                            </li>
                             <li class="nav-item mt-2 mt-lg-0">
                                 <span class="navbar-text nome-usuario">Olá, <?= escapar($usuarioLogado['nome_completo']) ?></span>
                             </li>
