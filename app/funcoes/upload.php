@@ -103,3 +103,65 @@ function processarUploadImagemCientista(array $arquivo): ?string
 
     return 'cientistas/' . $nomeSeguro;
 }
+
+/**
+ * Resolve somente os caminhos internos gerados para fotografias de cientistas.
+ */
+function localizarImagemCientista(?string $caminhoRelativo): ?string
+{
+    if (
+        $caminhoRelativo === null
+        || !preg_match('#^cientistas/[a-f0-9]{32}\.(jpg|png|webp)$#D', $caminhoRelativo)
+    ) {
+        return null;
+    }
+
+    $diretorio = realpath(dirname(__DIR__, 2) . '/storage/uploads/cientistas');
+
+    if ($diretorio === false) {
+        return null;
+    }
+
+    $caminhoAbsoluto = realpath($diretorio . '/' . basename($caminhoRelativo));
+
+    if (
+        $caminhoAbsoluto === false
+        || !is_file($caminhoAbsoluto)
+        || !str_starts_with($caminhoAbsoluto, $diretorio . DIRECTORY_SEPARATOR)
+    ) {
+        return null;
+    }
+
+    return $caminhoAbsoluto;
+}
+
+/**
+ * Remove apenas arquivos com nome interno válido; falhas são registradas no log.
+ */
+function removerImagemCientista(?string $caminhoRelativo): bool
+{
+    if ($caminhoRelativo === null || $caminhoRelativo === '') {
+        return true;
+    }
+
+    $caminhoAbsoluto = localizarImagemCientista($caminhoRelativo);
+
+    if ($caminhoAbsoluto === null) {
+        $diretorio = realpath(dirname(__DIR__, 2) . '/storage/uploads/cientistas');
+        $nomeValido = preg_match('#^cientistas/[a-f0-9]{32}\.(jpg|png|webp)$#D', $caminhoRelativo) === 1;
+
+        if ($nomeValido && $diretorio !== false && !file_exists($diretorio . '/' . basename($caminhoRelativo))) {
+            return true;
+        }
+
+        error_log('Não foi possível localizar uma fotografia de cientista para remoção.');
+        return false;
+    }
+
+    if (!unlink($caminhoAbsoluto)) {
+        error_log('Não foi possível remover uma fotografia de cientista.');
+        return false;
+    }
+
+    return true;
+}

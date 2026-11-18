@@ -43,7 +43,10 @@ require_once dirname(__DIR__, 2) . '/app/componentes/cabecalho.php';
                 <p class="sobretitulo text-primary">Área restrita</p>
                 <h1 class="titulo-secao mb-0">Perfis de cientistas</h1>
             </div>
-            <a class="btn btn-outline-primary" href="<?= escapar(urlAplicacao('admin/index.php')) ?>">Voltar ao painel</a>
+            <div class="d-flex flex-column flex-sm-row gap-2">
+                <a class="btn btn-primary" href="<?= escapar(urlAplicacao('admin/cientista-formulario.php')) ?>">Cadastrar cientista</a>
+                <a class="btn btn-outline-primary" href="<?= escapar(urlAplicacao('admin/index.php')) ?>">Voltar ao painel</a>
+            </div>
         </div>
 
         <?php if ($cientistas === null): ?>
@@ -73,6 +76,7 @@ require_once dirname(__DIR__, 2) . '/app/componentes/cabecalho.php';
                                         <th scope="col">Indicado por</th>
                                         <th scope="col">Cadastrado em</th>
                                         <th scope="col">Atualizado em</th>
+                                        <th scope="col">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -83,6 +87,12 @@ require_once dirname(__DIR__, 2) . '/app/componentes/cabecalho.php';
                                             <td><?= $cientista['indicador_nome'] === null ? 'Cadastro administrativo' : escapar($cientista['indicador_nome']) ?></td>
                                             <td><?= escapar(date('d/m/Y H:i', strtotime($cientista['criado_em']))) ?></td>
                                             <td><?= escapar(date('d/m/Y H:i', strtotime($cientista['atualizado_em']))) ?></td>
+                                            <td>
+                                                <a class="btn btn-sm btn-outline-primary"
+                                                    href="<?= escapar(urlAplicacao('admin/cientista-formulario.php?id=' . (int) $cientista['id_cientista'])) ?>">
+                                                    Editar
+                                                </a>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

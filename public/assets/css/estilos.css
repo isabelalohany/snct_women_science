@@ -231,6 +231,12 @@ main {
     color: #a11f3f;
 }
 
+.imagem-admin-cientista {
+    width: 10rem;
+    max-height: 12rem;
+    object-fit: cover;
+}
+
 .chamada-interna {
     padding: 2.5rem;
     border-radius: 1.25rem;
