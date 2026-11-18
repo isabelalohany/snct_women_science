@@ -48,3 +48,57 @@ function criarIndicacaoCientista(mysqli $conexao, array $dados, int $usuarioId, 
 
     return (int) $conexao->insert_id;
 }
+
+/**
+ * Lista os perfis para consulta administrativa, do mais recentemente alterado.
+ *
+ * @return list<array<string, mixed>>
+ */
+function listarCientistasAdministrativas(mysqli $conexao): array
+{
+    $consulta = $conexao->query(
+        'SELECT
+            c.id_cientista,
+            c.nome_completo,
+            c.area_atuacao,
+            c.status,
+            c.criado_em,
+            c.atualizado_em,
+            u.nome_completo AS indicador_nome
+         FROM cientistas AS c
+         LEFT JOIN usuarios AS u ON u.id_usuario = c.usuario_indicador_id
+         ORDER BY c.atualizado_em DESC, c.id_cientista DESC'
+    );
+
+    return $consulta->fetch_all(MYSQLI_ASSOC);
+}
+
+/**
+ * Retorna a quantidade de perfis em cada situação do fluxo.
+ *
+ * @return array<string, int>
+ */
+function contarCientistasPorStatus(mysqli $conexao): array
+{
+    $quantidades = [
+        'pendente' => 0,
+        'publicada' => 0,
+        'rejeitada' => 0,
+        'oculta' => 0,
+    ];
+    $consulta = $conexao->query(
+        'SELECT status, COUNT(*) AS total
+         FROM cientistas
+         GROUP BY status'
+    );
+
+    while ($linha = $consulta->fetch_assoc()) {
+        $status = $linha['status'];
+
+        if (array_key_exists($status, $quantidades)) {
+            $quantidades[$status] = (int) $linha['total'];
+        }
+    }
+
+    return $quantidades;
+}

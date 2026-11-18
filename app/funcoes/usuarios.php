@@ -41,3 +41,47 @@ function criarUsuario(mysqli $conexao, string $nomeCompleto, string $email, stri
 
     return (int) $conexao->insert_id;
 }
+
+/**
+ * Lista dados administrativos sem consultar nem retornar hashes de senha.
+ *
+ * @return list<array<string, mixed>>
+ */
+function listarUsuariosAdministrativos(mysqli $conexao): array
+{
+    $consulta = $conexao->query(
+        'SELECT id_usuario, nome_completo, email, tipo_usuario, criado_em, atualizado_em
+         FROM usuarios
+         ORDER BY atualizado_em DESC, id_usuario DESC'
+    );
+
+    return $consulta->fetch_all(MYSQLI_ASSOC);
+}
+
+/**
+ * Retorna a quantidade de contas por tipo de usuário.
+ *
+ * @return array<string, int>
+ */
+function contarUsuariosPorTipo(mysqli $conexao): array
+{
+    $quantidades = [
+        'usuario' => 0,
+        'administrador' => 0,
+    ];
+    $consulta = $conexao->query(
+        'SELECT tipo_usuario, COUNT(*) AS total
+         FROM usuarios
+         GROUP BY tipo_usuario'
+    );
+
+    while ($linha = $consulta->fetch_assoc()) {
+        $tipo = $linha['tipo_usuario'];
+
+        if (array_key_exists($tipo, $quantidades)) {
+            $quantidades[$tipo] = (int) $linha['total'];
+        }
+    }
+
+    return $quantidades;
+}

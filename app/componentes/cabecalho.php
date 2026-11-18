@@ -54,6 +54,12 @@ $urlBaseSeguro = escapar(urlAplicacao());
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= $urlBaseSeguro ?>/indicar-cientista.php">Indicar cientista</a>
                             </li>
+                            <?php if ($usuarioLogado['tipo_usuario'] === 'administrador'): ?>
+                                <li class="nav-item">
+                                    <a class="nav-link <?= str_starts_with($paginaAtiva, 'admin-') ? 'active' : '' ?>"
+                                        href="<?= $urlBaseSeguro ?>/admin/index.php">Administração</a>
+                                </li>
+                            <?php endif; ?>
                             <li class="nav-item mt-2 mt-lg-0">
                                 <span class="navbar-text nome-usuario">Olá, <?= escapar($usuarioLogado['nome_completo']) ?></span>
                             </li>
