@@ -71,7 +71,6 @@ function processarUploadImagemCientista(array $arquivo): ?string
     }
 
     $tipoMime = finfo_file($finfo, $arquivo['tmp_name']);
-    finfo_close($finfo);
 
     if (!is_string($tipoMime) || !isset($tiposPermitidos[$tipoMime])) {
         throw new InvalidArgumentException('Envie uma imagem JPEG, PNG ou WebP.');

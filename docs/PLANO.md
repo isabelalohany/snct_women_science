@@ -1,7 +1,7 @@
 # Plano de desenvolvimento
 
 **Aprovação:** 15 de novembro de 2026  
-**Estado atual:** Entregas 1 a 9 concluídas e validadas; integração geral e revisão final pendentes.
+**Estado atual:** Entregas 1 a 9 concluídas e validadas; integração geral e revisão final concluídas.
 
 Este plano organiza o desenvolvimento do portal Mulheres na Ciência em entregas
 pequenas, dependentes e validáveis. Cada entrega só poderá começar após a
@@ -193,11 +193,29 @@ Integração geral → revisão final
 
 ## Etapa 6 — Integração e testes gerais
 
-Após as entregas aprovadas, serão verificados os fluxos completos de cadastro,
-login, indicação, moderação, publicação, exclusão, permissões, imagens,
-responsividade e regressões.
+**Estado: concluída.** As validações manuais dos fluxos das Entregas 1 a 9
+foram confirmadas pelo usuário. Nesta integração, também foram executadas
+verificações somente de leitura: renderização GET das páginas públicas e
+administrativas, formulários de login/cadastro/indicação/gestão e entrega de
+imagem publicada, além de consultas ao banco sem alterações.
+
+Todos os arquivos PHP em `app/` e `public/` passaram por `php8.4 -l`, e
+`git diff --check` não apontou problemas. Operações que alteram o banco não
+foram repetidas nesta etapa; seu funcionamento já havia sido validado
+manualmente nas entregas correspondentes. A inspeção visual responsiva também
+permanece baseada nas validações manuais confirmadas pelo usuário.
 
 ## Etapa 7 — Revisão e documentação final
 
-Serão revisados organização, segurança, aderência à especificação, qualidade
-pedagógica do código, documentação, arquivos ignorados e pendências.
+**Estado: concluída.** Foram revisados organização, aderência à especificação,
+consultas preparadas, escape de conteúdo HTML, sessões, autorização, CSRF,
+upload e entrega de imagens, configurações e arquivos ignorados. O arquivo
+`.env` não está versionado e as extensões `mysqli`, `mbstring` e `fileinfo`
+estão disponíveis no PHP 8.4.27 verificado. Os formulários de login, cadastro
+e gestão administrativa foram renderizados com PHP 8.4; a rota de imagem
+publicada também foi testada sem avisos ou depreciações.
+
+Na revisão foi removido o fechamento explícito de objetos `finfo`, que gera
+depreciação no PHP 8.5; os objetos são liberados automaticamente. A rota de
+imagem publicada foi testada novamente sem avisos ou depreciações. Não foram
+adicionadas dependências nem funcionalidades fora do escopo.

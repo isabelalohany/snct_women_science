@@ -51,7 +51,6 @@ if ($finfo === false) {
 }
 
 $tipoMime = finfo_file($finfo, $caminhoImagem);
-finfo_close($finfo);
 
 if (!in_array($tipoMime, ['image/jpeg', 'image/png', 'image/webp'], true)) {
     error_log('Uma fotografia armazenada possui tipo inválido.');
