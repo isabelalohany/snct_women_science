@@ -1,12 +1,25 @@
 <?php
 
-require_once dirname(__DIR__) . '/app/config/bootstrap.php';
+require_once dirname(__DIR__) . '/app/config/conexao.php';
 require_once dirname(__DIR__) . '/app/funcoes/autenticacao.php';
+require_once dirname(__DIR__) . '/app/funcoes/cientistas.php';
 
 $tituloPagina = 'Mulheres na Ciência';
 $paginaAtiva = 'inicio';
 $usuarioLogado = usuarioAtual();
 $mensagemFlash = obterMensagemFlash();
+$cientistasRecentes = null;
+
+try {
+    $cientistasRecentes = listarCientistasRecentes(obterConexao());
+} catch (Throwable $erro) {
+    error_log('Erro ao carregar cientistas recentes na página inicial: ' . $erro->getMessage());
+}
+
+$destaques = $cientistasRecentes === null ? [] : array_slice($cientistasRecentes, 0, 3);
+$outrasCientistasRecentes = $cientistasRecentes === null
+    ? []
+    : array_slice($cientistasRecentes, 3);
 
 require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
 ?>
@@ -89,6 +102,75 @@ require_once dirname(__DIR__) . '/app/componentes/cabecalho.php';
             </div>
         </div>
     </section>
+
+    <section class="secao-pagina secao-destaques" aria-labelledby="titulo-destaques">
+        <div class="container">
+            <div class="mb-4">
+                <p class="sobretitulo text-primary">Conheça quem transforma a ciência</p>
+                <h2 class="titulo-secao" id="titulo-destaques">Destaques</h2>
+            </div>
+
+            <?php if ($cientistasRecentes === null): ?>
+                <div class="alert alert-danger" role="alert">
+                    Não foi possível carregar as cientistas publicadas agora.
+                    Você ainda pode visitar o <a href="<?= escapar(urlAplicacao('catalogo.php')) ?>">catálogo</a>.
+                </div>
+            <?php elseif ($destaques === []): ?>
+                <div class="alert alert-info" role="status">
+                    Ainda não há cientistas publicadas. As novas trajetórias aparecerão aqui após a aprovação.
+                </div>
+            <?php else: ?>
+                <div class="row g-4">
+                    <?php foreach ($destaques as $cientista): ?>
+                        <div class="col-sm-6 col-lg-4">
+                            <article class="cartao-proposito d-flex flex-column">
+                                <?php if ($cientista['imagem_path'] !== null): ?>
+                                    <img class="imagem-cartao-cientista mb-3"
+                                        src="<?= escapar(urlAplicacao('imagem.php?id=' . (int) $cientista['id_cientista'])) ?>"
+                                        alt="Fotografia de <?= escapar($cientista['nome_completo']) ?>"
+                                        loading="lazy">
+                                <?php else: ?>
+                                    <div class="imagem-cartao-cientista imagem-cartao-sem-foto mb-3" aria-hidden="true">
+                                        <span>✦</span>
+                                    </div>
+                                <?php endif; ?>
+                                <h3 class="h5 titulo-secao"><?= escapar($cientista['nome_completo']) ?></h3>
+                                <p class="texto-formulario"><?= escapar($cientista['area_atuacao']) ?></p>
+                                <a class="btn btn-outline-primary mt-auto align-self-start"
+                                    href="<?= escapar(urlAplicacao('cientista.php?id=' . (int) $cientista['id_cientista'])) ?>">
+                                    Conhecer trajetória
+                                </a>
+                            </article>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+
+    <?php if ($outrasCientistasRecentes !== []): ?>
+        <section class="secao-pagina pt-0" aria-labelledby="titulo-publicacoes-recentes">
+            <div class="container">
+                <div class="mb-4">
+                    <p class="sobretitulo text-primary">Novas histórias no catálogo</p>
+                    <h2 class="titulo-secao" id="titulo-publicacoes-recentes">Publicadas recentemente</h2>
+                </div>
+                <div class="row g-3">
+                    <?php foreach ($outrasCientistasRecentes as $cientista): ?>
+                        <div class="col-md-4">
+                            <article class="cartao-proposito cartao-recente">
+                                <h3 class="h5 titulo-secao"><?= escapar($cientista['nome_completo']) ?></h3>
+                                <p class="texto-formulario"><?= escapar($cientista['area_atuacao']) ?></p>
+                                <a href="<?= escapar(urlAplicacao('cientista.php?id=' . (int) $cientista['id_cientista'])) ?>">
+                                    Ver perfil
+                                </a>
+                            </article>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
 
     <section class="secao-chamada" aria-labelledby="titulo-participacao">
         <div class="container">

@@ -155,6 +155,27 @@ function buscarCientistaPublicada(mysqli $conexao, int $idCientista): ?array
 }
 
 /**
+ * Busca até seis perfis publicados, priorizando a publicação mais recente.
+ *
+ * @return list<array<string, mixed>>
+ */
+function listarCientistasRecentes(mysqli $conexao): array
+{
+    $status = 'publicada';
+    $consulta = $conexao->prepare(
+        'SELECT id_cientista, nome_completo, area_atuacao, imagem_path, publicado_em
+         FROM cientistas
+         WHERE status = ?
+         ORDER BY publicado_em DESC, id_cientista DESC
+         LIMIT 6'
+    );
+    $consulta->bind_param('s', $status);
+    $consulta->execute();
+
+    return $consulta->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+/**
  * Busca um perfil completo para o formulário administrativo.
  *
  * @return array<string, mixed>|null
