@@ -104,6 +104,57 @@ function contarCientistasPorStatus(mysqli $conexao): array
 }
 
 /**
+ * Lista somente os perfis publicados, em ordem alfabética.
+ *
+ * @return list<array<string, mixed>>
+ */
+function listarCientistasPublicadas(mysqli $conexao): array
+{
+    $status = 'publicada';
+    $consulta = $conexao->prepare(
+        'SELECT id_cientista, nome_completo, area_atuacao, imagem_path
+         FROM cientistas
+         WHERE status = ?
+         ORDER BY nome_completo ASC, id_cientista ASC'
+    );
+    $consulta->bind_param('s', $status);
+    $consulta->execute();
+
+    return $consulta->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+/**
+ * Busca informações públicas somente de um perfil publicado.
+ *
+ * @return array<string, mixed>|null
+ */
+function buscarCientistaPublicada(mysqli $conexao, int $idCientista): ?array
+{
+    $status = 'publicada';
+    $consulta = $conexao->prepare(
+        'SELECT
+            id_cientista,
+            nome_completo,
+            nacionalidade,
+            data_nascimento,
+            area_atuacao,
+            biografia,
+            contribuicoes,
+            informacoes_adicionais,
+            imagem_path,
+            fontes_referencias
+         FROM cientistas
+         WHERE id_cientista = ? AND status = ?
+         LIMIT 1'
+    );
+    $consulta->bind_param('is', $idCientista, $status);
+    $consulta->execute();
+    $cientista = $consulta->get_result()->fetch_assoc();
+
+    return $cientista ?: null;
+}
+
+/**
  * Busca um perfil completo para o formulário administrativo.
  *
  * @return array<string, mixed>|null

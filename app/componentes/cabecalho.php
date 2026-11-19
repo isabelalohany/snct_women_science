@@ -7,9 +7,9 @@
 
 $tituloPagina = $tituloPagina ?? 'Mulheres na Ciência';
 $paginaAtiva = $paginaAtiva ?? '';
-require_once dirname(__DIR__) . '/funcoes/comuns.php';
+require_once dirname(__DIR__) . '/funcoes/autenticacao.php';
 
-$usuarioLogado = function_exists('usuarioAtual') ? usuarioAtual() : null;
+$usuarioLogado = usuarioAtual();
 $tituloSeguro = escapar($tituloPagina);
 $urlBaseSeguro = escapar(urlAplicacao());
 ?>
@@ -48,7 +48,9 @@ $urlBaseSeguro = escapar(urlAplicacao());
                                 href="<?= $urlBaseSeguro ?>/index.php">Início</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= $urlBaseSeguro ?>/catalogo.php">Catálogo</a>
+                            <a class="nav-link <?= $paginaAtiva === 'catalogo' ? 'active' : '' ?>"
+                                <?= $paginaAtiva === 'catalogo' ? 'aria-current="page"' : '' ?>
+                                href="<?= $urlBaseSeguro ?>/catalogo.php">Catálogo</a>
                         </li>
                         <?php if ($usuarioLogado !== null): ?>
                             <li class="nav-item">
